@@ -1,0 +1,36 @@
+server:
+    port: 5020
+    servlet:
+        context-path: /v1
+        session:
+            timeout: 7200s
+    tomcat:
+        basedir: /data/logs/access
+        accesslog:
+            enabled: true
+            pattern: '%t %a "%r" %s (%D ms)'
+
+logging:
+    level:
+        root: info
+    path: ./data/logs
+
+spring:
+    setvlet:
+        multipart:
+            max-file-size: 15M
+    #支持通过CGLIB方式代理
+    aop:
+        proxy-target-class: true
+
+---
+spring:
+    profiles: dev
+
+---
+spring:
+    profiles: test
+
+---
+spring:
+    profiles: prod

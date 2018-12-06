@@ -22,6 +22,15 @@ spring:
     #支持通过CGLIB方式代理
     aop:
         proxy-target-class: true
+    mail:
+        host: smtp.mxhichina.com
+        username:
+        password:
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    timeout: 25000
 
 ---
 spring:

@@ -3,7 +3,8 @@ package com.cold.framework.api.bean.out;
 import com.cold.framework.common.dictionary.ColdState;
 
 /**
- * @author cuipeng 2018/12/4 18:03
+ * @author cuipeng
+ * @since 2018/12/4 18:03
  */
 public class BaseOutVo {
 
@@ -17,6 +18,12 @@ public class BaseOutVo {
     public BaseOutVo(ColdState coldState) {
         this.state = coldState.getState();
         this.message = coldState.getMessage();
+    }
+
+    public BaseOutVo(ColdState coldState, Object data) {
+        this.state = coldState.getState();
+        this.message = coldState.getMessage();
+        this.data = data;
     }
 
     public BaseOutVo(Integer state, String message) {

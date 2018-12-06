@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author cuipeng 2018/12/4 11:23
+ * @author cuipeng
+ * @since 2018/12/4 11:23
  */
 @RestController
 @RequestMapping("/cold")
@@ -26,4 +27,5 @@ public class ColdController {
         System.out.println(param);
         return "success";
     }
+
 }

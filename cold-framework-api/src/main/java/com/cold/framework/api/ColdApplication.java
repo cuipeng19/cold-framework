@@ -9,7 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * @author cuipeng 2018/12/4 11:21
+ * @author cuipeng
+ * @since 2018/12/4 11:21
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.cold.framework")

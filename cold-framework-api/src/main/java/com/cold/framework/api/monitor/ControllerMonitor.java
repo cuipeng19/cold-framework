@@ -24,11 +24,13 @@ import javax.validation.Validator;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
 /**
- * @author cuipeng 2018/12/4 14:23
+ * @author cuipeng
+ * @since 2018/12/4 14:23
  */
 @Aspect
 @Component
@@ -51,13 +53,17 @@ public class ControllerMonitor {
         long startTime = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
         String methodInfo = joinPoint.getTarget().getClass().getSimpleName() + "." + joinPoint.getSignature().getName();
 
-        logger.debug("{\"Api_Request\":{},\"params:\"{}}", methodInfo, new ObjectMapper().writeValueAsString(joinPoint.getArgs()));
+        try {
+            logger.debug("{\"Api_Request\":{},\"params:\"{}}", methodInfo, new ObjectMapper().writeValueAsString(joinPoint.getArgs()));
+        } catch (Exception e) {
+            logger.debug("{\"Api_Request\":{},\"params:\"{}}", methodInfo, Arrays.toString(joinPoint.getArgs()));
+        }
 
         Object o = joinPoint.proceed();
 
         long duration = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli() - startTime;
         String returnInfo = new ObjectMapper().writeValueAsString(o);
-        logger.debug("{\"Api_Response\":{},\"returnData:\"{},\"duration:\"{}}", methodInfo, returnInfo, duration);
+        logger.debug("{\"Api_Response\":{},\"return:\"{},\"duration:\"{}}", methodInfo, returnInfo, duration);
 
         return o;
     }
@@ -72,12 +78,16 @@ public class ControllerMonitor {
         long startTime = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
         String methodInfo = joinPoint.getTarget().getClass().getSimpleName() + "." + joinPoint.getSignature().getName();
 
-        logger.debug("{\"Rest_Request\":{},\"params:\"{}}", methodInfo, new ObjectMapper().writeValueAsString(joinPoint.getArgs()));
+        try {
+            logger.debug("{\"Rest_Request\":{},\"params:\"{}}", methodInfo, new ObjectMapper().writeValueAsString(joinPoint.getArgs()));
+        } catch (Exception e) {
+            logger.debug("{\"Rest_Request\":{},\"params:\"{}}", methodInfo, Arrays.toString(joinPoint.getArgs()));
+        }
 
         Object o = joinPoint.proceed();
         long duration = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli() - startTime;
         String returnInfo = new ObjectMapper().writeValueAsString(o);
-        logger.debug("{\"Rest_Response\":{},\"returnData:\"{},\"duration:\"{}}", methodInfo, returnInfo, duration);
+        logger.debug("{\"Rest_Response\":{},\"return:\"{},\"duration:\"{}}", methodInfo, returnInfo, duration);
 
         return o;
     }

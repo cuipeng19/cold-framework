@@ -1,13 +1,16 @@
 package com.cold.framework.common.dictionary;
 
 /**
- * @author cuipeng 2018/12/4 17:28
+ * @author cuipeng
+ * @since 2018/12/4 17:28
  */
 public enum  ColdState {
 
     SUCCESS(0, "OK"),
 
     PARAM_VALIDATE_FAIL(10000, "接口参数校验失败"),
+
+    EMAIL_SEND_FAIL(11001, "邮件发送失败"),
 
     INTERNAL_ERROR(-1, "服务器异常");
 

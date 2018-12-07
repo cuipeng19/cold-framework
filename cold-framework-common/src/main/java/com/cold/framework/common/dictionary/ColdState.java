@@ -1,32 +1,52 @@
 package com.cold.framework.common.dictionary;
 
 /**
+ * Enumeration of application state codes.
+ *
  * @author cuipeng
  * @since 2018/12/4 17:28
  */
 public enum  ColdState {
 
-    SUCCESS(0, "OK"),
+    /**
+     * {@code 200 OK}
+     */
+    SUCCESS(200, "OK"),
+    /**
+     * {@code 10000 Parameter check failed}
+     */
+    PARAM_VALIDATE_FAIL(10000, "Parameter check failed"),
+    /**
+     * {@code 11001 Send e-mail failed}
+     */
+    EMAIL_SEND_FAIL(11001, "Send e-mail failed"),
+    /**
+     * {@code 500 Internal Server Error}
+     */
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
-    PARAM_VALIDATE_FAIL(10000, "接口参数校验失败"),
-
-    EMAIL_SEND_FAIL(11001, "邮件发送失败"),
-
-    INTERNAL_ERROR(-1, "服务器异常");
 
     private final Integer state;
+
     private final String message;
+
 
     ColdState(Integer state, String message) {
         this.state = state;
         this.message = message;
     }
 
+    /**
+     * Return the integer value of this state code.
+     */
     public Integer getState() {
-        return state;
+        return this.state;
     }
 
+    /**
+     * Return the message of this state code.
+     */
     public String getMessage() {
-        return message;
+        return this.message;
     }
 }

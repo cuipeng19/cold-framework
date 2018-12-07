@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * This is a controller of test.
  *
@@ -24,6 +26,7 @@ public class TestController {
 
     @Autowired
     private EmailSender emailSender;
+
 
     /**
      * Send a simple e-mail to specific mailbox.
@@ -42,13 +45,14 @@ public class TestController {
         return new BaseOutVo(ColdState.SUCCESS);
     }
 
+
     /**
      * Send an e-mail with extra to specific mailbox.
      *
      * @param emailTo an e-mail address
      * @return BaseOutVo
      */
-    @PostMapping("/email")
+    @PostMapping("/email/extra")
     public Object emailTest(String emailTo, MultipartFile file) {
         try {
             emailSender.sendExtraEmail(emailTo, "Test to send an email with extra", "receive some of extra.", ImmutableMap.of(file.getOriginalFilename(), file));
@@ -59,4 +63,22 @@ public class TestController {
         return new BaseOutVo(ColdState.SUCCESS);
     }
 
+
+    /**
+     * View exception logs.
+     * Include {@code ParamException}, {@code ColdException}.
+     *
+     * @param param input parameter
+     * @return a string
+     */
+    @GetMapping("/logs")
+    public Object test(@NotBlank String param) {
+        try {
+            String a = null;
+            a.split(";");
+        } catch (Exception e) {
+            throw new ColdException(ColdState.INTERNAL_SERVER_ERROR, e);
+        }
+        return new BaseOutVo(ColdState.SUCCESS);
+    }
 }

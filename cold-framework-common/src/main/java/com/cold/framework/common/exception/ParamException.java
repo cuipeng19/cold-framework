@@ -8,13 +8,9 @@ import com.cold.framework.common.dictionary.ColdState;
  */
 public class ParamException extends ColdException {
 
-    public ParamException() {
-        super(ColdState.PARAM_VALIDATE_FAIL);
-    }
-
     public ParamException(String message) {
-        super(message);
-        state = ColdState.PARAM_VALIDATE_FAIL.getState();
+        this(ColdState.PARAM_VALIDATE_FAIL);
+        super.message = message;
     }
 
     public ParamException(ColdState coldState) {

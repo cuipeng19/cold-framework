@@ -32,9 +32,33 @@ spring:
                     auth: true
                     timeout: 25000
 
+rabbitmq:
+    exchanges:
+        collection-topic:
+            name: collection-topic
+            type: topic
+            durable: true
+    queues:
+        collection-in:
+            name: collection-in
+        collection-out:
+            name: collection-out
+    bindings:
+        collection-topic:
+            - collection-in
+            - collection-out
+
+
 ---
 spring:
     profiles: dev
+    rabbitmq:
+        host: 127.0.0.1
+        port: 5672
+        username: dev
+        password: dev
+        virtualHost: /
+
 
 ---
 spring:

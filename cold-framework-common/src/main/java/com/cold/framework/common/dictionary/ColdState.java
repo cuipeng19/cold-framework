@@ -21,9 +21,9 @@ public enum  ColdState {
      */
     EMAIL_SEND_FAIL(11001, "Send e-mail failed"),
     /**
-     * {@code 500 Internal Server Error}
+     * {@code -1 Internal Server Error}
      */
-    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
+    INTERNAL_SERVER_ERROR(-1, "Internal Server Error");
 
 
     private final Integer state;

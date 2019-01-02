@@ -1,6 +1,7 @@
 package com.cold.framework.api.controller;
 
 import com.cold.framework.api.bean.out.BaseOutVo;
+import com.cold.framework.biz.CollectionService;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.notify.email.EmailSender;
 import com.cold.framework.common.exception.ColdException;
@@ -26,7 +27,8 @@ public class TestController {
 
     @Autowired
     private EmailSender emailSender;
-
+    @Autowired
+    private CollectionService collectionService;
 
     /**
      * Send a simple e-mail to specific mailbox.
@@ -69,10 +71,10 @@ public class TestController {
      * Include {@code ParamException}, {@code ColdException}.
      *
      * @param param input parameter
-     * @return a string
+     * @return BaseOutVo
      */
     @GetMapping("/logs")
-    public Object test(@NotBlank String param) {
+    public Object logTest(@NotBlank String param) {
         try {
             String a = null;
             a.split(";");
@@ -81,4 +83,16 @@ public class TestController {
         }
         return new BaseOutVo(ColdState.SUCCESS);
     }
+
+    /**
+     * message queue
+     *
+     * @return BaseOutVo
+     */
+    @GetMapping("/mq")
+    public Object mqTest() {
+        collectionService.collectionIn();
+        return new BaseOutVo(ColdState.SUCCESS);
+    }
+
 }

@@ -2,7 +2,6 @@ package com.cold.framework.notify.rabbitmq;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link EnableConfigurationProperties Auto-configuration} for RabbitMQ.
+ * <p>
+ * This configuration class is active only when the RabbitMQ and spring AMQP client
+ * libraries are on the classpath.
+ * <p>
+ * Registers the following beans:
+ * <ul>
+ * <li>{@link org.springframework.amqp.core.Queue} instance when the class is initializing</li>
+ * <li>{@link org.springframework.amqp.core.Exchange} instance when the class is initializing</li>
+ * <li>{@link org.springframework.amqp.core.Binding} instance when the class is initializing</li>
+ * </ul>
  * @author cuipeng
  * @date 2019/1/2 9:58
  */
@@ -27,6 +37,11 @@ public class AutoConfiguration {
     @Autowired
     private RabbitmqProperties rabbitmqProperties;
 
+    /**
+     * Registers {@link org.springframework.amqp.core.Queue}
+     *
+     * @return List<{@link org.springframework.amqp.core.Queue}>
+     */
     @Bean("queues")
     public List<Queue> queues() {
         List<Queue> queues = new ArrayList<>();
@@ -43,6 +58,11 @@ public class AutoConfiguration {
         return queues;
     }
 
+    /**
+     * Registers {@link org.springframework.amqp.core.Exchange}
+     *
+     * @return List<{@link org.springframework.amqp.core.Exchange}>
+     */
     @Bean("exchanges")
     public List<Exchange> exchanges() {
         List<Exchange> exchanges = new ArrayList<>();
@@ -54,6 +74,13 @@ public class AutoConfiguration {
         return exchanges;
     }
 
+    /**
+     * Registers {@link org.springframework.amqp.core.Binding}
+     *
+     * @param queues queue list
+     * @param exchanges exchange list
+     * @return List<{@link org.springframework.amqp.core.Binding}>
+     */
     @Bean
     public List<Binding> bindings(List<Queue> queues, List<Exchange> exchanges) {
         List<Binding> bindings = new ArrayList<>();
@@ -84,12 +111,16 @@ public class AutoConfiguration {
         return bindings;
     }
 
+    /**
+     * Set {@link org.springframework.amqp.rabbit.core.RabbitTemplate} confirmation mode.
+     *
+     * @param connectionFactory RabbitMQ connection factory
+     * @return {@link org.springframework.amqp.rabbit.core.RabbitTemplate}
+     */
     @Bean
     @Scope(scopeName = "prototype")
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        CachingConnectionFactory c = (CachingConnectionFactory) connectionFactory;
-        c.setPublisherConfirms(true);
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(c);
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMandatory(true);
         return rabbitTemplate;
     }

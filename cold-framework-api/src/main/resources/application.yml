@@ -13,7 +13,7 @@ server:
 logging:
     level:
         root: info
-    path: ./data/logs
+    path: /data/logs
 
 spring:
     setvlet:
@@ -31,6 +31,18 @@ spring:
                 smtp:
                     auth: true
                     timeout: 25000
+
+mybatis:
+    typeAliasesPackage: com.cold.framework.dao.model
+    mapperLocations: classpath:mapper/*Mapper.xml
+    configLocation: classpath:mybatis-config.xml
+    checkConfigLocation: true
+
+mapper:
+    not-empty: false
+    identity: MYSQL
+    mappers:
+        - com.cold.framework.dao.util.ColdMapper
 
 rabbitmq:
     exchanges:
@@ -52,13 +64,21 @@ rabbitmq:
 ---
 spring:
     profiles: dev
+    datasource:
+            url: jdbc:mysql://127.0.0.1:3306/
+            username:
+            password:
+            tomcat:
+                max-wait: 10000
+                max-active: 50
+                test-on-borrow: true
     rabbitmq:
         host: 127.0.0.1
         port: 5672
         username: dev
         password: dev
         virtualHost: /
-
+        publisherConfirms: true
 
 ---
 spring:

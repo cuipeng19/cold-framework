@@ -7,6 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @author cuipeng
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = "com.cold.framework")
+@MapperScan(basePackages = "com.cold.framework.dao.mapper")
 public class ColdApplication {
 
     @Autowired

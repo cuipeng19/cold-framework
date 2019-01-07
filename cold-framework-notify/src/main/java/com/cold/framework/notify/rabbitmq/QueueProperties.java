@@ -5,21 +5,43 @@ import org.springframework.amqp.core.Queue;
 import java.util.Map;
 
 /**
+ * Configuration properties for Queue.
+ *
  * @author cuipeng
  * @date 2019/1/2 9:56
  */
 public class QueueProperties {
 
+    /**
+     * The name of the Queue - must be not null.
+     */
     private String name;
 
+    /**
+     * True if we are declaring a durable queue (the queue will survive a server restart).
+     */
     private boolean durable = true;
 
+    /**
+     * True if we are declaring a exclusive queue (the queue will only be userd by declarer's connection).
+     */
     private boolean exclusive = false;
 
+    /**
+     * True if the server should delete the queue when it is no longer in use.
+     */
     private boolean autoDelete = false;
 
+    /**
+     * The arguments used to declare the queue.
+     */
     private Map<String,Object> arguments;
 
+    /**
+     * Construct a new queue, given a name, durability flag, and auto-delete flag, and arguments.
+     *
+     * @return a queue
+     */
     public Queue buildQueue() {
         return new Queue(name,durable,exclusive,autoDelete,arguments);
     }

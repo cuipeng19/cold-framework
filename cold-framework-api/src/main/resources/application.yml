@@ -65,13 +65,13 @@ rabbitmq:
 spring:
     profiles: dev
     datasource:
-            url: jdbc:mysql://127.0.0.1:3306/
-            username:
-            password:
-            tomcat:
-                max-wait: 10000
-                max-active: 50
-                test-on-borrow: true
+        url: jdbc:mysql://127.0.0.1:3306/
+        username:
+        password:
+        tomcat:
+            max-wait: 10000
+            max-active: 50
+            test-on-borrow: true
     rabbitmq:
         host: 127.0.0.1
         port: 5672

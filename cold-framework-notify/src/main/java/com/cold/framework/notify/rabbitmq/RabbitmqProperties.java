@@ -6,16 +6,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Configuration properties for Rabbit.
+ *
  * @author cuipeng
  * @date 2019/1/2 9:53
  */
 @ConfigurationProperties(prefix = "rabbitmq")
 public class RabbitmqProperties {
 
+    /**
+     * RabbitMQ exchange.
+     */
     private Map<String,ExchangeProperties> exchanges;
 
+    /**
+     * RabbitMQ queue.
+     */
     private Map<String,QueueProperties> queues;
 
+    /**
+     * RabbitMQ binding.
+     */
     private Map<String,List<String>> bindings;
 
     public Map<String, ExchangeProperties> getExchanges() {

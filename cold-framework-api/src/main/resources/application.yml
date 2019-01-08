@@ -79,6 +79,7 @@ spring:
         password: dev
         virtualHost: /
         publisherConfirms: true
+        publisherReturns: true
 
 ---
 spring:

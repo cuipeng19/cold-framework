@@ -5,6 +5,7 @@ import com.cold.framework.biz.CollectionService;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.notify.email.EmailSender;
 import com.cold.framework.common.exception.ColdException;
+import com.cold.framework.notify.monitor.MonitorSender;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,8 @@ public class TestController {
     private EmailSender emailSender;
     @Autowired
     private CollectionService collectionService;
+    @Autowired
+    private MonitorSender monitorSender;
 
     /**
      * Send a simple e-mail to specific mailbox.
@@ -92,6 +95,23 @@ public class TestController {
     @GetMapping("/mq")
     public Object mqTest() {
         collectionService.collectionIn();
+        return new BaseOutVo(ColdState.SUCCESS);
+    }
+
+    /**
+     * warn
+     *
+     * @return BaseOutVo
+     */
+    @GetMapping("/warn")
+    public Object warnTest() {
+        try {
+            String cold = null;
+            cold.split(",");
+        } catch (Exception e) {
+            monitorSender.sendWarn("1", e, getClass().getResource("/").getPath());
+            throw e;
+        }
         return new BaseOutVo(ColdState.SUCCESS);
     }
 

@@ -50,15 +50,26 @@ rabbitmq:
             name: collection-topic
             type: topic
             durable: true
+        warn-fanout:
+            name: warn-fanout
+            type: fanout
+            durable: true
     queues:
         collection-in:
             name: collection-in
         collection-out:
             name: collection-out
+        message:
+            name: warn-message
+        email:
+            name: warn-email
     bindings:
         collection-topic:
             - collection-in
             - collection-out
+        warn-fanout:
+            - warn-message
+            - warn-email
 
 
 ---

@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
 /**
- * It gives you access to the template which can then be userd to send email methods.
+ * It gives you access to the template which can then be used to send email methods.
  *
  * <p>
  *     This class needs a JavaMailSender.

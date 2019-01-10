@@ -27,6 +27,7 @@ import java.util.Map;
  * <li>{@link org.springframework.amqp.core.Exchange} instance when the class is initializing</li>
  * <li>{@link org.springframework.amqp.core.Binding} instance when the class is initializing</li>
  * </ul>
+ *
  * @author cuipeng
  * @date 2019/1/2 9:58
  */

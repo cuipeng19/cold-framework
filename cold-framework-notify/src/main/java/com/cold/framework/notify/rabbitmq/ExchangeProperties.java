@@ -5,25 +5,48 @@ import org.springframework.amqp.core.*;
 import java.util.Map;
 
 /**
+ * Configuration properties for Exchange.
+ *
  * @author cuipeng
  * @date 2019/1/2 9:55
  */
 public class ExchangeProperties {
 
+    /**
+     * The name of exchange.
+     */
     private String name;
 
+    /**
+     * True if we are declaring a durable exchange.
+     */
     private boolean durable = true;
 
+    /**
+     * True if the server should delete the exchange when it is no longer in use.
+     */
     private boolean autoDelete = false;
 
+    /**
+     * The arguments used to declare the queue.
+     */
     private Map<String,Object> arguments;
 
     private boolean delayed;
 
     private boolean internal;
 
+    /**
+     * The exchange of type.
+     * Include topic, direct, fanout, headers, system.
+     */
     private String type;
 
+    /**
+     * Construct a new exchange.
+     *
+     * @return a exchange
+     */
     public Exchange buildExchange() {
         Exchange exchange = null;
         if(ExchangeTypes.TOPIC.equals(type)) {

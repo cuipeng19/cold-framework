@@ -109,7 +109,7 @@ public class TestController {
             String cold = null;
             cold.split(",");
         } catch (Exception e) {
-            monitorSender.sendWarn("1", e, getClass().getResource("/").getPath());
+            monitorSender.send("1", e, getClass().getResource("/").getPath());
             throw e;
         }
         return new BaseOutVo(ColdState.SUCCESS);

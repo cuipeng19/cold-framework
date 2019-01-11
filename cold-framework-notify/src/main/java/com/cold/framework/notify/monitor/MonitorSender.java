@@ -31,7 +31,7 @@ public class MonitorSender {
      * @param path project path
      */
     @Async
-    public void sendWarn(String eventType, Exception e, String path) {
+    public void send(String eventType, Exception e, String path) {
         WarnMsg warnMsg = warnMsgHandler.buildWarnMsg(eventType, e, path);
 
         if(!rabbitTemplate.isConfirmListener()) {

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -26,7 +26,7 @@ import java.util.Map;
  * @author cuipeng
  * @since 2018/12/6 9:57
  */
-@Component
+@Service
 public class EmailSender {
 
     @Value("${spring.mail.username}")

@@ -99,12 +99,12 @@ public class TestController {
     }
 
     /**
-     * warn
+     * Monitor for abnormal in system.
      *
      * @return BaseOutVo
      */
-    @GetMapping("/warn")
-    public Object warnTest() {
+    @GetMapping("/monitor")
+    public Object monitorTest() {
         try {
             String cold = null;
             cold.split(",");

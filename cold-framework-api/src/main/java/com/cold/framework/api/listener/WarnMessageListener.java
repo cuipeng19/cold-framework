@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * A Listener that will receive message to send SMS with alert information.
+ *
  * @author cuipeng
  * @date 2019/1/10 18:53
  */
@@ -19,6 +21,12 @@ public class WarnMessageListener {
     @Autowired
     private ConnectionFactory factory;
 
+    /**
+     * A simple listener container is used for receive message from rabbitMQ to send SMS
+     * with alert information.
+     *
+     * @return
+     */
     @Bean("warnMessageContainer")
     public MessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();

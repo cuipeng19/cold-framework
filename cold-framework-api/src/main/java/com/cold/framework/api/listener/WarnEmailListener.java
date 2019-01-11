@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
+ * A Listener that will receive message to send email with alert information.
  *
  * @author cuipeng
  * @date 2019/1/10 18:52
@@ -26,6 +26,12 @@ public class WarnEmailListener {
     @Autowired
     private SysWarnService sysWarnService;
 
+    /**
+     * A simple listener container is used for receive message from rabbitMQ to send email
+     * with alert information.
+     *
+     * @return MessageListenerContainer
+     */
     @Bean("warnEmailContainer")
     public MessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();

@@ -37,6 +37,13 @@ public class EmailSender {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    /**
+     * A succinct method of sending email.
+     *
+     * @param emailTo received email address
+     * @param title title of the email
+     * @param content content of the email
+     */
     public void sendSimpleEmail(String emailTo, String title, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(emailFrom);
@@ -46,6 +53,14 @@ public class EmailSender {
         javaMailSender.send(message);
     }
 
+    /**
+     * Send email with the attachment.
+     *
+     * @param emailTo received email address
+     * @param title title of the email
+     * @param content content of the email
+     * @param extra attachment of the email
+     */
     public void sendExtraEmail(String emailTo, String title, String content, Map<String,MultipartFile> extra) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {

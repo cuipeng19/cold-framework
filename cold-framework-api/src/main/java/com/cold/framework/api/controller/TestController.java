@@ -2,9 +2,11 @@ package com.cold.framework.api.controller;
 
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.CollectionService;
+import com.cold.framework.common.annotation.Token;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.notify.email.EmailSender;
 import com.cold.framework.common.exception.ColdException;
+import com.cold.framework.notify.monitor.MonitorSender;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,8 @@ public class TestController {
     private EmailSender emailSender;
     @Autowired
     private CollectionService collectionService;
+    @Autowired
+    private MonitorSender monitorSender;
 
     /**
      * Send a simple e-mail to specific mailbox.
@@ -95,4 +99,27 @@ public class TestController {
         return new BaseOutVo(ColdState.SUCCESS);
     }
 
+    /**
+     * Monitor for abnormal in system.
+     *
+     * @return BaseOutVo
+     */
+    @GetMapping("/monitor")
+    public Object monitorTest() {
+        try {
+            String cold = null;
+            cold.split(",");
+        } catch (Exception e) {
+            monitorSender.send("1", e, getClass().getResource("/").getPath());
+            throw e;
+        }
+        return new BaseOutVo(ColdState.SUCCESS);
+    }
+
+    @GetMapping("/token")
+    @Token
+    public Object tokenTest() {
+
+        return new BaseOutVo(ColdState.SUCCESS);
+    }
 }

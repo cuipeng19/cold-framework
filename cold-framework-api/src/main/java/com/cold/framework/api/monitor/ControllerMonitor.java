@@ -1,6 +1,9 @@
 package com.cold.framework.api.monitor;
 
 import com.cold.framework.api.bean.in.BaseInVo;
+import com.cold.framework.common.annotation.Token;
+import com.cold.framework.common.dictionary.ColdState;
+import com.cold.framework.common.exception.ColdException;
 import com.cold.framework.common.exception.ParamException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.JoinPoint;
@@ -17,7 +20,11 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -44,7 +51,8 @@ public class ControllerMonitor {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 入参出参日志
+     * Print logs with input and output parameters.
+     *
      * @param joinPoint
      * @throws Throwable
      */
@@ -69,12 +77,13 @@ public class ControllerMonitor {
     }
 
     /**
-     * 外部调用日志
+     * Print logs with external calls.
+     *
      * @param joinPoint
      * @throws Throwable
      */
     @Around("execution(* org.springframework.web.client.RestOperations.*(..))")
-    public Object restOperation(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object restAround(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
         String methodInfo = joinPoint.getTarget().getClass().getSimpleName() + "." + joinPoint.getSignature().getName();
 
@@ -93,11 +102,12 @@ public class ControllerMonitor {
     }
 
     /**
-     * 接口参数校验
+     * Check parameters when calling interfaces.
+     *
      * @param joinPoint
      */
     @Before("execution(* com.cold.framework.api.controller.*Controller.*(..))")
-    public void paramValidate(JoinPoint joinPoint) throws Throwable {
+    public void parameterBefore(JoinPoint joinPoint) throws Throwable {
         Object target = joinPoint.getThis();
         Object[] params = joinPoint.getArgs();
         Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
@@ -128,5 +138,42 @@ public class ControllerMonitor {
                 throw new ParamException(errorMessage.toString());
             }
         }
+    }
+
+    /**
+     * Check token when calling interfaces.
+     *
+     * @param joinPoint
+     */
+    @Before("execution(* com.cold.framework.api.controller.*Controller.*(..))")
+    public void TokenBefore(JoinPoint joinPoint) {
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        HttpServletRequest request = sra.getRequest();
+        Object token = request.getHeader("HTTP-USER-TOKEN");
+        if ("".equals(token) || token == null) {
+            token = request.getParameter("HTTP-USER-TOKEN");
+        }
+        Optional.ofNullable(token).orElseThrow(() -> new ColdException(ColdState.TOKEN_NOT_EXIST));
+        logger.info("token:" + token);
+
+        Object target = joinPoint.getTarget();
+        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+        Token tokenClass = target.getClass().getAnnotation(Token.class);
+        Token tokenMethod = method.getAnnotation(Token.class);
+
+        String[] excludeMethods = new String[]{};
+        if(tokenClass!=null) {
+            excludeMethods = tokenClass.exclude();
+        }
+
+        if(tokenClass!=null || tokenMethod!=null) {
+            if(Arrays.asList(excludeMethods).contains(method.getName())) {
+                return;
+            }
+            Object userId = stringRedisTemplate.opsForHash().get("userToken",token.toString());
+            Optional.ofNullable(userId).orElseThrow(() -> new ColdException(ColdState.TOKEN_INVALID));
+        }
+
     }
 }

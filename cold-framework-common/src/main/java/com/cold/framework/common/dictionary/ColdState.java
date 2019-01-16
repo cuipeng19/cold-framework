@@ -17,6 +17,14 @@ public enum  ColdState {
      */
     PARAM_VALIDATE_FAIL(10000, "Parameter check failed"),
     /**
+     * {@code 10001 Token is invalid}
+     */
+    TOKEN_INVALID(10001, "Token is invalid"),
+    /**
+     * {@code 10002 No token exists}
+     */
+    TOKEN_NOT_EXIST(10002, "No token exists"),
+    /**
      * {@code 11001 Send e-mail failed}
      */
     EMAIL_SEND_FAIL(11001, "Send e-mail failed"),

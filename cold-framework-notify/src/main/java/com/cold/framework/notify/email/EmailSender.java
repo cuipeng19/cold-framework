@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Map;
 
 /**
- * It gives you access to the template which can then be userd to send email methods.
+ * It gives you access to the template which can then be used to send email methods.
  *
  * <p>
  *     This class needs a JavaMailSender.
@@ -26,7 +26,7 @@ import java.util.Map;
  * @author cuipeng
  * @since 2018/12/6 9:57
  */
-@Component
+@Service
 public class EmailSender {
 
     @Value("${spring.mail.username}")
@@ -37,6 +37,13 @@ public class EmailSender {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    /**
+     * A succinct method of sending email.
+     *
+     * @param emailTo received email address
+     * @param title title of the email
+     * @param content content of the email
+     */
     public void sendSimpleEmail(String emailTo, String title, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(emailFrom);
@@ -46,6 +53,14 @@ public class EmailSender {
         javaMailSender.send(message);
     }
 
+    /**
+     * Send email with the attachment.
+     *
+     * @param emailTo received email address
+     * @param title title of the email
+     * @param content content of the email
+     * @param extra attachment of the email
+     */
     public void sendExtraEmail(String emailTo, String title, String content, Map<String,MultipartFile> extra) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {

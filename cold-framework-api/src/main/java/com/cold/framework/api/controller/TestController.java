@@ -2,6 +2,7 @@ package com.cold.framework.api.controller;
 
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.CollectionService;
+import com.cold.framework.common.annotation.Token;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.notify.email.EmailSender;
 import com.cold.framework.common.exception.ColdException;
@@ -115,4 +116,10 @@ public class TestController {
         return new BaseOutVo(ColdState.SUCCESS);
     }
 
+    @GetMapping("/token")
+    @Token
+    public Object tokenTest() {
+
+        return new BaseOutVo(ColdState.SUCCESS);
+    }
 }

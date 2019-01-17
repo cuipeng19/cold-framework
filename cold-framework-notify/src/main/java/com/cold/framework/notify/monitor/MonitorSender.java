@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
- * Send data to rabbitMQ.
+ * Send data to rabbitMQ when occur specified exception.
  *
  * @author cuipeng
  * @date 2019/1/10 18:20
@@ -24,7 +24,7 @@ public class MonitorSender {
     private WarnMsgHandler warnMsgHandler;
 
     /**
-     * method of send.
+     * method of send with alert information.
      *
      * @param eventType event type
      * @param e exception
@@ -37,9 +37,9 @@ public class MonitorSender {
         if(!rabbitTemplate.isConfirmListener()) {
             rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
                 if(ack) {
-                    logger.info("Send to MQ with warn message successful：" + warnMsg.getExceptionSystem() + "(" + warnMsg.getExceptionName() + "),event type：" + warnMsg.getEventType());
+                    logger.info("Send to MQ with alert information successful：" + warnMsg.getExceptionSystem() + "(" + warnMsg.getExceptionName() + "),event type：" + warnMsg.getEventType());
                 } else {
-                    logger.info("Send to MQ with warn message fail：" + cause);
+                    logger.info("Send to MQ with alert information fail：" + cause);
                 }
             });
         }

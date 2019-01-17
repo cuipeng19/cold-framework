@@ -29,6 +29,14 @@ public enum  ColdState {
      */
     EMAIL_SEND_FAIL(11001, "Send e-mail failed"),
     /**
+     * {@code 11010 Get SMS code error frequently}
+     */
+    SMS_CODE_ERROR_FREQUENT(11010, "Get SMS code error frequently"),
+    /**
+     * {@code 11011 SMS code send frequently}
+     */
+    SMS_CODE_SEND_FREQUENT(11011, "SMS code send frequently"),
+    /**
      * {@code -1 Internal Server Error}
      */
     INTERNAL_SERVER_ERROR(-1, "Internal Server Error");

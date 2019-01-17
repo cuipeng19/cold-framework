@@ -174,6 +174,6 @@ public class ControllerMonitor {
             Object userId = stringRedisTemplate.opsForHash().get("userToken",token.toString());
             Optional.ofNullable(userId).orElseThrow(() -> new ColdException(ColdState.TOKEN_INVALID));
         }
-
     }
+
 }

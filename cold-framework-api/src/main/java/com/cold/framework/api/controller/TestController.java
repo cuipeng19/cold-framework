@@ -48,7 +48,7 @@ public class TestController {
             throw new ColdException(ColdState.EMAIL_SEND_FAIL, e);
         }
 
-        return new BaseOutVo(ColdState.SUCCESS);
+        return new BaseOutVo();
     }
 
 
@@ -66,7 +66,7 @@ public class TestController {
             throw new ColdException(ColdState.EMAIL_SEND_FAIL, e);
         }
 
-        return new BaseOutVo(ColdState.SUCCESS);
+        return new BaseOutVo();
     }
 
 
@@ -85,7 +85,7 @@ public class TestController {
         } catch (Exception e) {
             throw new ColdException(ColdState.INTERNAL_SERVER_ERROR, e);
         }
-        return new BaseOutVo(ColdState.SUCCESS);
+        return new BaseOutVo();
     }
 
     /**
@@ -96,7 +96,7 @@ public class TestController {
     @GetMapping("/mq")
     public Object mqTest() {
         collectionService.collectionIn();
-        return new BaseOutVo(ColdState.SUCCESS);
+        return new BaseOutVo();
     }
 
     /**
@@ -113,13 +113,13 @@ public class TestController {
             monitorSender.send("1", e, getClass().getResource("/").getPath());
             throw e;
         }
-        return new BaseOutVo(ColdState.SUCCESS);
+        return new BaseOutVo();
     }
 
     @GetMapping("/token")
     @Token
     public Object tokenTest() {
 
-        return new BaseOutVo(ColdState.SUCCESS);
+        return new BaseOutVo();
     }
 }

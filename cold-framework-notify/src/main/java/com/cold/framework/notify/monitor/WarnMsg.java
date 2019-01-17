@@ -3,7 +3,7 @@ package com.cold.framework.notify.monitor;
 import java.util.Date;
 
 /**
- * Warn data.
+ * The necessary of Alert information.
  *
  * @author cuipeng
  * @date 2019/1/10 18:22

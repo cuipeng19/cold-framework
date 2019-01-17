@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 
 /**
- * This is a controller of test.
+ * This is a controller for test.
  *
  * @author cuipeng
  * @since 2018/12/6 11:14
@@ -116,6 +116,11 @@ public class TestController {
         return new BaseOutVo();
     }
 
+    /**
+     * Check token.
+     *
+     * @return BaseOutVo
+     */
     @GetMapping("/token")
     @Token
     public Object tokenTest() {

@@ -32,6 +32,17 @@ public class BaseOutVo {
     }
 
     /**
+     * Constructs a {@code BaseOutVo} using the given data.
+     *
+     * @param data data of return
+     */
+    public BaseOutVo(Object data) {
+        this.state = ColdState.SUCCESS.getState();
+        this.message = ColdState.SUCCESS.getMessage();
+        this.data = data;
+    }
+
+    /**
      * Constructs a {@code BaseOutVo} using the given {@code coldState}
      *
      * @param coldState include specific state and message phrase

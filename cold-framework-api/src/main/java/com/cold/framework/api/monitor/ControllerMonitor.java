@@ -154,7 +154,6 @@ public class ControllerMonitor {
         if ("".equals(token) || token == null) {
             token = request.getParameter("HTTP-USER-TOKEN");
         }
-        Optional.ofNullable(token).orElseThrow(() -> new ColdException(ColdState.TOKEN_NOT_EXIST));
         logger.info("token:" + token);
 
         Object target = joinPoint.getTarget();
@@ -171,6 +170,7 @@ public class ControllerMonitor {
             if(Arrays.asList(excludeMethods).contains(method.getName())) {
                 return;
             }
+            Optional.ofNullable(token).orElseThrow(() -> new ColdException(ColdState.TOKEN_NOT_EXIST));
             Object userId = stringRedisTemplate.opsForHash().get("userToken",token.toString());
             Optional.ofNullable(userId).orElseThrow(() -> new ColdException(ColdState.TOKEN_INVALID));
         }

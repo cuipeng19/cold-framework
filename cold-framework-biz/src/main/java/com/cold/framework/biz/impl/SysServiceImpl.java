@@ -26,7 +26,7 @@ public class SysServiceImpl implements SysService {
         if(smsCode==null) {
             // get sms code
             smsCode = StringUtil.randomStr(4);
-            stringRedisTemplate.opsForValue().set("sms:code:" + phoneNumber, smsCode,600L, TimeUnit.SECONDS);
+            stringRedisTemplate.opsForValue().set("sms:code:" + phoneNumber, smsCode,600, TimeUnit.SECONDS);
 
             // check error count
             String errorCount = stringRedisTemplate.opsForValue().get("sms:error:" + phoneNumber);
@@ -44,7 +44,11 @@ public class SysServiceImpl implements SysService {
         // send SMS code
 
         // increment success count +1
-        stringRedisTemplate.opsForValue().increment("sms:success:" + phoneNumber,1);
+        if(stringRedisTemplate.opsForValue().get("sms:success:" + phoneNumber)!=null) {
+            stringRedisTemplate.opsForValue().increment("sms:success:" + phoneNumber,1);
+        } else {
+            stringRedisTemplate.opsForValue().set("sms:success:" + phoneNumber,"1",600, TimeUnit.SECONDS);
+        }
 
         return smsCode;
     }

@@ -37,6 +37,14 @@ public enum  ColdState {
      */
     SMS_CODE_SEND_FREQUENT(11011, "SMS code send frequently"),
     /**
+     * {@code 11012 SMS code is invalid}
+     */
+    SMS_CODE_INVALID(11012, "SMS code is invalid"),
+    /**
+     * {@code 11013 SMS code error}
+     */
+    SMS_CODE_ERROR(11013, "SMS code error"),
+    /**
      * {@code -1 Internal Server Error}
      */
     INTERNAL_SERVER_ERROR(-1, "Internal Server Error");

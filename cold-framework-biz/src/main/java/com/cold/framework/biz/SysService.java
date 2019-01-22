@@ -14,4 +14,13 @@ public interface SysService {
      * @return sms code
      */
     String getSmsCode(String phoneNumber);
+
+    /**
+     * Login.
+     *
+     * @param phoneNumber
+     * @param smsCode
+     * @return
+     */
+    String login(String phoneNumber, String smsCode);
 }

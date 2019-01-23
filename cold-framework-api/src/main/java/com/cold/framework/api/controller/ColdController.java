@@ -3,7 +3,9 @@ package com.cold.framework.api.controller;
 import com.cold.framework.api.bean.in.LoginInVo;
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.SysService;
+import com.cold.framework.biz.UserDeviceService;
 import com.cold.framework.common.annotation.Token;
+import com.cold.framework.dao.model.UserDevice;
 import com.google.common.collect.ImmutableMap;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ColdController {
 
     @Autowired
     private SysService sysService;
+    @Autowired
+    private UserDeviceService userDeviceService;
 
     /**
      * Getting SMS verification code.
@@ -43,8 +47,12 @@ public class ColdController {
      */
     @PostMapping("/login")
     public Object login(@RequestBody LoginInVo inVo) {
-        String token = sysService.login(inVo.getPhoneNumber(), inVo.getSmsCode());
+        // check user
+        UserDevice userDevice = userDeviceService.getByPhone(inVo.getPhoneNumber());
+        if(userDevice==null) {
+            userDevice = userDeviceService.createUser(inVo.getPhoneNumber());
+        }
 
-        return new BaseOutVo(ImmutableMap.of("token",token));
+        return new BaseOutVo(ImmutableMap.of("token",userDevice.getToken()));
     }
 }

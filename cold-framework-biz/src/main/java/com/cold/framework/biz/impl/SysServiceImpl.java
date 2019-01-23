@@ -1,11 +1,11 @@
 package com.cold.framework.biz.impl;
 
 import com.cold.framework.biz.SysService;
+import com.cold.framework.biz.handler.UserDeviceHandler;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.common.exception.ColdException;
-import com.cold.framework.common.util.ObjectId;
 import com.cold.framework.common.util.StringUtil;
-import org.apache.commons.lang3.StringUtils;
+import com.cold.framework.dao.mapper.UserDeviceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class SysServiceImpl implements SysService {
         String smsCode = stringRedisTemplate.opsForValue().get("sms:code:" + phoneNumber);
         if(smsCode==null) {
             // get sms code
-            smsCode = StringUtil.randomStr(4);
+            smsCode = StringUtil.randomStr(6);
             stringRedisTemplate.opsForValue().set("sms:code:" + phoneNumber, smsCode,600, TimeUnit.SECONDS);
 
             // check error count
@@ -35,46 +35,12 @@ public class SysServiceImpl implements SysService {
             if(Integer.valueOf(errorCount==null ? "0" : errorCount) >= 5) {
                 throw new ColdException(ColdState.SMS_CODE_ERROR_FREQUENT);
             }
-
-            // check success count
-            String successCount = stringRedisTemplate.opsForValue().get("sms:success:" + phoneNumber);
-            if(Integer.valueOf(successCount==null ? "0" : successCount) >=5) {
-                throw new ColdException(ColdState.SMS_CODE_SEND_FREQUENT);
-            }
         }
 
         // send SMS code
 
-        // increment success count +1
-        if(stringRedisTemplate.opsForValue().get("sms:success:" + phoneNumber)!=null) {
-            stringRedisTemplate.opsForValue().increment("sms:success:" + phoneNumber,1);
-        } else {
-            stringRedisTemplate.opsForValue().set("sms:success:" + phoneNumber,"1",600, TimeUnit.SECONDS);
-        }
 
         return smsCode;
     }
 
-    @Override
-    public String login(String phoneNumber, String smsCode) {
-        // check SMS code
-        String originCode = stringRedisTemplate.opsForValue().get("sms:code:" + phoneNumber);
-        if(StringUtils.isBlank(originCode)) {
-            stringRedisTemplate.opsForValue().increment("sms:error:" + phoneNumber,1);
-            throw new ColdException(ColdState.SMS_CODE_INVALID);
-        }
-        if(!originCode.equals(smsCode)) {
-            stringRedisTemplate.opsForValue().increment("sms:error:" + phoneNumber,1);
-            throw new ColdException(ColdState.SMS_CODE_ERROR);
-        }
-
-        // create user
-        String userId = "userId";
-
-        // create token
-        String token = "cold" + new ObjectId().toString();
-        stringRedisTemplate.opsForHash().put("userToken", token, userId);
-
-        return token;
-    }
 }

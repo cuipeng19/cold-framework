@@ -6,12 +6,14 @@ package com.cold.framework.common.dictionary;
  * @author cuipeng
  * @since 2018/12/4 17:28
  */
-public enum  ColdState {
+public enum ColdState {
 
     /**
      * {@code 200 OK}
      */
     SUCCESS(200, "OK"),
+
+
     /**
      * {@code 10000 Parameter check failed}
      */
@@ -24,6 +26,11 @@ public enum  ColdState {
      * {@code 10002 No token exists}
      */
     TOKEN_NOT_EXIST(10002, "No token exists"),
+    /**
+     * {@code 10003 Token saved fail when create a new user}
+     */
+    TOKEN_SAVE_FAIL(10003, "Token saved fail when create a new user"),
+
     /**
      * {@code 11001 Send e-mail failed}
      */
@@ -44,6 +51,8 @@ public enum  ColdState {
      * {@code 11013 SMS code error}
      */
     SMS_CODE_ERROR(11013, "SMS code error"),
+
+
     /**
      * {@code -1 Internal Server Error}
      */

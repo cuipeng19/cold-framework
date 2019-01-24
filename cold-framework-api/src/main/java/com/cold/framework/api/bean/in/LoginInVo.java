@@ -17,8 +17,11 @@ public class LoginInVo extends BaseInVo {
     private String phoneNumber;
 
     @NotBlank
-    @Length(min = 4, max = 4)
+    @Length(min = 6, max = 6)
     private String smsCode;
+
+    @Length(max = 50)
+    private String token;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -34,5 +37,13 @@ public class LoginInVo extends BaseInVo {
 
     public void setSmsCode(String smsCode) {
         this.smsCode = smsCode;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

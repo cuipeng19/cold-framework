@@ -3,12 +3,15 @@ package com.cold.framework.api.controller;
 import com.cold.framework.api.bean.in.LoginInVo;
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.SysService;
-import com.cold.framework.biz.UserDeviceService;
+import com.cold.framework.biz.UserService;
 import com.cold.framework.common.annotation.Token;
-import com.cold.framework.dao.model.UserDevice;
+import com.cold.framework.common.dictionary.ColdState;
+import com.cold.framework.common.exception.ColdException;
+import com.cold.framework.dao.model.User;
 import com.google.common.collect.ImmutableMap;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
@@ -21,13 +24,15 @@ import javax.validation.constraints.NotBlank;
  */
 @RestController
 @RequestMapping("/cold")
-@Token(exclude = {"getSmsCode","login"})
+@Token(exclude = {"getSmsCode", "checkToken", "login"})
 public class ColdController {
 
     @Autowired
     private SysService sysService;
     @Autowired
-    private UserDeviceService userDeviceService;
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private UserService userService;
 
     /**
      * Getting SMS verification code.
@@ -37,7 +42,25 @@ public class ColdController {
     @GetMapping("/sms/code/get")
     public Object getSmsCode(@Length(min = 11, max = 11) @NotBlank String phoneNumber) {
         String smsCode = sysService.getSmsCode(phoneNumber);
+        // todo send SMS code
+
         return new BaseOutVo(ImmutableMap.of("smsCode",smsCode));
+    }
+
+    /**
+     * Asynchronous validate token when obtain SMS code.
+     *
+     * @param phoneNumber phone number
+     * @return
+     */
+    @GetMapping("/token/check")
+    public Object checkToken(@Length(min = 11, max = 11) @NotBlank String phoneNumber) {
+        User user = userService.getByPhone(phoneNumber);
+        String token = "";
+        if(user!=null) {
+            token = user.getToken();
+        }
+        return new BaseOutVo(ImmutableMap.of("token", token));
     }
 
     /**
@@ -47,12 +70,26 @@ public class ColdController {
      */
     @PostMapping("/login")
     public Object login(@RequestBody LoginInVo inVo) {
-        // check user
-        UserDevice userDevice = userDeviceService.getByPhone(inVo.getPhoneNumber());
-        if(userDevice==null) {
-            userDevice = userDeviceService.createUser(inVo.getPhoneNumber());
+        String token = inVo.getToken();
+
+        // check SMS code
+        String smsCode = stringRedisTemplate.opsForValue().get("sms:code:" + inVo.getPhoneNumber());
+        if(smsCode==null) {
+            sysService.setExpireAndIncrement("sms:error:"+inVo.getPhoneNumber(),1,600);
+            throw new ColdException(ColdState.SMS_CODE_INVALID);
+        }
+        if(!smsCode.equals(inVo.getSmsCode())) {
+            sysService.setExpireAndIncrement("sms:error:"+inVo.getPhoneNumber(),1,600);
+            throw new ColdException(ColdState.SMS_CODE_ERROR);
         }
 
-        return new BaseOutVo(ImmutableMap.of("token",userDevice.getToken()));
+        // try to obtain in redis
+        boolean tokenExist = stringRedisTemplate.opsForSet().isMember("user-token", token);
+        if(!tokenExist) {
+            User user = userService.createUser(inVo.getPhoneNumber());
+            token = user.getToken();
+        }
+
+        return new BaseOutVo(ImmutableMap.of("token",token));
     }
 }

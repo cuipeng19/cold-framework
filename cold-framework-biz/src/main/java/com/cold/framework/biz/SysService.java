@@ -15,4 +15,12 @@ public interface SysService {
      */
     String getSmsCode(String phoneNumber);
 
+    /**
+     * Set a timeout for key and increase it by delta.
+     *
+     * @param key redis key
+     * @param delta delta
+     * @param timeout key of timeout
+     */
+    void setExpireAndIncrement(String key, long delta, long timeout);
 }

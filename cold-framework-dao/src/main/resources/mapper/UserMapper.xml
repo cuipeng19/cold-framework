@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cold.framework.dao.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.cold.framework.dao.model.User" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor >
+      <idArg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="token" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="account" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_icon" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone_number" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="last_login_ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="last_login_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="created_at" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="last_update" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+</mapper>

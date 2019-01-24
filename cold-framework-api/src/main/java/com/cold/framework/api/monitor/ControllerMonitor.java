@@ -173,8 +173,8 @@ public class ControllerMonitor {
             if(token==null) {
                 throw new ColdException(ColdState.TOKEN_NOT_EXIST);
             }
-            boolean tokenExist = stringRedisTemplate.opsForSet().isMember("user-token", token);
-            if(!tokenExist) {
+            Boolean tokenExist = stringRedisTemplate.opsForSet().isMember("user-token", token);
+            if(tokenExist!=null && !tokenExist) {
                 throw new ColdException(ColdState.TOKEN_INVALID);
             }
         }

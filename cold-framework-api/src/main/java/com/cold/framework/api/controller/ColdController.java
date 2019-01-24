@@ -73,6 +73,10 @@ public class ColdController {
         String token = inVo.getToken();
 
         // check SMS code
+        String errorCount = stringRedisTemplate.opsForValue().get("sms:error:" + inVo.getPhoneNumber());
+        if(Integer.valueOf(errorCount==null ? "0" : errorCount) >= 5) {
+            throw new ColdException(ColdState.SMS_CODE_ERROR_FREQUENT);
+        }
         String smsCode = stringRedisTemplate.opsForValue().get("sms:code:" + inVo.getPhoneNumber());
         if(smsCode==null) {
             sysService.setExpireAndIncrement("sms:error:"+inVo.getPhoneNumber(),1,600);
@@ -84,8 +88,8 @@ public class ColdController {
         }
 
         // try to obtain in redis
-        boolean tokenExist = stringRedisTemplate.opsForSet().isMember("user-token", token);
-        if(!tokenExist) {
+        Boolean tokenExist = stringRedisTemplate.opsForSet().isMember("user-token", token);
+        if(tokenExist!=null && !tokenExist) {
             User user = userService.createUser(inVo.getPhoneNumber());
             token = user.getToken();
         }

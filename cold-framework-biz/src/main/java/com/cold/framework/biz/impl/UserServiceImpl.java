@@ -10,6 +10,7 @@ import com.cold.framework.dao.util.ColdMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author cuipeng
@@ -34,6 +35,7 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public User createUser(String phoneNumber) {
         // create token
         String token = "cold" + new ObjectId().toString();

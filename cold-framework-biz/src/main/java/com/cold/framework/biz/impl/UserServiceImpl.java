@@ -37,15 +37,20 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User createUser(String phoneNumber) {
-        // create token
-        String token = "cold" + new ObjectId().toString();
+        User orgUser = userMapper.getByPhone(phoneNumber);
+        User user = orgUser;
+        if(orgUser==null) {
+            // create token
+            String token = "cold" + new ObjectId().toString();
 
-        // create user
-        User user = userHandler.buildUser(phoneNumber, token);
-        userMapper.insertSelective(user);
+            // create user
+            user = userHandler.buildUser(phoneNumber, token);
+            userMapper.insertSelective(user);
 
-        // save redis
-        stringRedisTemplate.opsForSet().add("user-token", token);
+            // save redis
+            stringRedisTemplate.opsForSet().add("user-token", token);
+        }
+
 
         return user;
     }

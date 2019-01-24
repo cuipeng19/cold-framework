@@ -77,13 +77,7 @@ public class ColdController {
         // try to obtain in redis
         Boolean tokenExist = redisService.checkTokenInLogin(inVo.getToken());
         if(tokenExist!=null && !tokenExist) {
-            User orgUser = userService.getByPhone(inVo.getPhoneNumber());
-            if(orgUser==null) {
-                User user = userService.createUser(inVo.getPhoneNumber());
-                token = user.getToken();
-            } else {
-                token = orgUser.getToken();
-            }
+            token = userService.createUser(inVo.getPhoneNumber()).getToken();
         }
 
         return new BaseOutVo(ImmutableMap.of("token",token));

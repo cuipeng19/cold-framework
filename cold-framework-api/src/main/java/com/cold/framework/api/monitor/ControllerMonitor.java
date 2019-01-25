@@ -2,6 +2,7 @@ package com.cold.framework.api.monitor;
 
 import com.cold.framework.api.bean.in.BaseInVo;
 import com.cold.framework.common.annotation.Token;
+import com.cold.framework.common.dictionary.ColdDictionary;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.common.exception.ColdException;
 import com.cold.framework.common.exception.ParamException;
@@ -173,7 +174,7 @@ public class ControllerMonitor {
             if(token==null) {
                 throw new ColdException(ColdState.TOKEN_NOT_EXIST);
             }
-            Boolean tokenExist = stringRedisTemplate.opsForSet().isMember("user-token", token);
+            Boolean tokenExist = stringRedisTemplate.opsForSet().isMember(ColdDictionary.USER_TOKEN, token);
             if(tokenExist!=null && !tokenExist) {
                 throw new ColdException(ColdState.TOKEN_INVALID);
             }

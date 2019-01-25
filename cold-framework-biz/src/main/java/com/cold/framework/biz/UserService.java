@@ -12,7 +12,7 @@ public interface UserService extends BaseService<User, String> {
      * Getting {@code User} by phone number.
      *
      * @param phoneNumber phone number
-     * @return
+     * @return {@code User}
      */
     User getByPhone(String phoneNumber);
 
@@ -20,8 +20,9 @@ public interface UserService extends BaseService<User, String> {
      * Create a new user by phone number.
      *
      * @param phoneNumber phone number
-     * @return
+     * @param deviceId device id
+     * @return token
      */
-    User createUser(String phoneNumber);
+    String createUser(String phoneNumber, String deviceId);
 
 }

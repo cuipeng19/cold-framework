@@ -3,9 +3,10 @@ package com.cold.framework.api.controller;
 import com.cold.framework.api.bean.in.LoginInVo;
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.RedisService;
+import com.cold.framework.biz.UserDeviceService;
 import com.cold.framework.biz.UserService;
 import com.cold.framework.common.annotation.Token;
-import com.cold.framework.dao.model.User;
+import com.cold.framework.dao.model.UserDevice;
 import com.google.common.collect.ImmutableMap;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class ColdController {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserDeviceService userDeviceService;
 
     /**
      * Getting SMS verification code.
@@ -55,9 +58,9 @@ public class ColdController {
     public Object checkToken(@Length(min = 11, max = 11) @NotBlank String phoneNumber) {
         String token = "";
 
-        User user = userService.getByPhone(phoneNumber);
-        if(user!=null) {
-            token = user.getToken();
+        UserDevice userDevice = userDeviceService.getByPhone(phoneNumber);
+        if(userDevice!=null) {
+            token = userDevice.getToken();
         }
         return new BaseOutVo(ImmutableMap.of("token", token));
     }
@@ -77,7 +80,7 @@ public class ColdController {
         // try to obtain in redis
         Boolean tokenExist = redisService.checkTokenInLogin(inVo.getToken());
         if(tokenExist!=null && !tokenExist) {
-            token = userService.createUser(inVo.getPhoneNumber()).getToken();
+            token = userService.createUser(inVo.getPhoneNumber(), inVo.getDeviceId());
         }
 
         return new BaseOutVo(ImmutableMap.of("token",token));

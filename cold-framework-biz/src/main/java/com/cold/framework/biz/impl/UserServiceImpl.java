@@ -2,11 +2,14 @@ package com.cold.framework.biz.impl;
 
 import com.cold.framework.biz.AbstractDbBaseService;
 import com.cold.framework.biz.UserService;
+import com.cold.framework.biz.handler.UserDeviceHandler;
 import com.cold.framework.biz.handler.UserHandler;
 import com.cold.framework.common.dictionary.ColdDictionary;
 import com.cold.framework.common.util.ObjectId;
+import com.cold.framework.dao.mapper.UserDeviceMapper;
 import com.cold.framework.dao.mapper.UserMapper;
 import com.cold.framework.dao.model.User;
+import com.cold.framework.dao.model.UserDevice;
 import com.cold.framework.dao.util.ColdMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -29,6 +32,10 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     private UserMapper userMapper;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private UserDeviceMapper userDeviceMapper;
+    @Autowired
+    private UserDeviceHandler userDeviceHandler;
 
     @Override
     public User getByPhone(String phoneNumber) {
@@ -37,22 +44,22 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User createUser(String phoneNumber) {
-        User orgUser = userMapper.getByPhone(phoneNumber);
-        User user = orgUser;
-        if(orgUser==null) {
+    public String createUser(String phoneNumber, String deviceId) {
+        UserDevice userDevice = userDeviceMapper.getByPhone(phoneNumber);
+        if(userDevice==null) {
             // create token
             String token = "cold" + new ObjectId().toString();
 
             // create user
-            user = userHandler.buildUser(phoneNumber, token);
+            User user = userHandler.buildUser(phoneNumber, token);
             userMapper.insertSelective(user);
+            userDevice = userDeviceHandler.buildUserDevice(user.getUserId(),token,deviceId,phoneNumber);
+            userDeviceMapper.insertSelective(userDevice);
 
             // save redis
             stringRedisTemplate.opsForSet().add(ColdDictionary.USER_TOKEN, token);
         }
 
-
-        return user;
+        return userDevice.getToken();
     }
 }

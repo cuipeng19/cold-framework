@@ -16,12 +16,11 @@ public class UserHandler {
      *
      * @param phoneNumber phone number
      * @param token token
-     * @return
+     * @return {@code User}
      */
     public User buildUser(String phoneNumber, String token) {
         User user = new User();
         user.setUserId(ObjectId.get().toString());
-        user.setToken(token);
         user.setPhoneNumber(phoneNumber);
 
         return user;

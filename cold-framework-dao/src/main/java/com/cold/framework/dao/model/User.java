@@ -13,11 +13,6 @@ public class User {
     private String userId;
 
     /**
-     * token
-     */
-    private String token;
-
-    /**
      * 用户帐号
      */
     private String account;
@@ -85,9 +80,8 @@ public class User {
     @Column(name = "last_update")
     private Date lastUpdate;
 
-    public User(String userId, String token, String account, String userName, String userIcon, String password, String phoneNumber, Integer type, Integer state, String lastLoginIp, Date lastLoginTime, String createIp, Date createdAt, Date lastUpdate) {
+    public User(String userId, String account, String userName, String userIcon, String password, String phoneNumber, Integer type, Integer state, String lastLoginIp, Date lastLoginTime, String createIp, Date createdAt, Date lastUpdate) {
         this.userId = userId;
-        this.token = token;
         this.account = account;
         this.userName = userName;
         this.userIcon = userIcon;
@@ -122,24 +116,6 @@ public class User {
      */
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
-
-    /**
-     * 获取token
-     *
-     * @return token - token
-     */
-    public String getToken() {
-        return token;
-    }
-
-    /**
-     * 设置token
-     *
-     * @param token token
-     */
-    public void setToken(String token) {
-        this.token = token == null ? null : token.trim();
     }
 
     /**

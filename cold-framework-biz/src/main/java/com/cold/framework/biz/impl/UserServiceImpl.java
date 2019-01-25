@@ -3,6 +3,7 @@ package com.cold.framework.biz.impl;
 import com.cold.framework.biz.AbstractDbBaseService;
 import com.cold.framework.biz.UserService;
 import com.cold.framework.biz.handler.UserHandler;
+import com.cold.framework.common.dictionary.ColdDictionary;
 import com.cold.framework.common.util.ObjectId;
 import com.cold.framework.dao.mapper.UserMapper;
 import com.cold.framework.dao.model.User;
@@ -48,7 +49,7 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
             userMapper.insertSelective(user);
 
             // save redis
-            stringRedisTemplate.opsForSet().add("user-token", token);
+            stringRedisTemplate.opsForSet().add(ColdDictionary.USER_TOKEN, token);
         }
 
 

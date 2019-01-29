@@ -33,7 +33,7 @@ import java.util.Map;
  */
 @Configuration
 @EnableConfigurationProperties(RabbitmqProperties.class)
-public class AutoConfiguration {
+public class MqAutoConfiguration {
 
     @Autowired
     private RabbitmqProperties rabbitmqProperties;

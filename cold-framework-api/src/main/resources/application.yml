@@ -60,7 +60,7 @@ rabbitmq:
         collection-out:
             name: collection-out
         message:
-            name: warn-message
+            name: warn-sms
         email:
             name: warn-email
     bindings:
@@ -68,21 +68,20 @@ rabbitmq:
             - collection-in
             - collection-out
         warn-fanout:
-            - warn-message
+            - warn-sms
             - warn-email
 
+sms:
+    type: feige
+    feige:
+        account:
+        pwd:
+        signId:
+        sendUrl: http://api.feige.ee/SmsService/Send
 
 ---
 spring:
     profiles: dev
-    datasource:
-        url: jdbc:mysql://127.0.0.1:3306/
-        username:
-        password:
-        tomcat:
-            max-wait: 10000
-            max-active: 50
-            test-on-borrow: true
     redis:
         host:
         port:
@@ -101,6 +100,17 @@ spring:
         virtualHost: /
         publisherConfirms: true
         publisherReturns: true
+
+druid:
+    url: jdbc:mysql://127.0.0.1:3306/
+    username:
+    password:
+    initial-size: 1
+    min-idle: 5
+    max-active: 20
+    test-on-borrow: true
+    filters: stat,wall,log4j
+
 
 ---
 spring:

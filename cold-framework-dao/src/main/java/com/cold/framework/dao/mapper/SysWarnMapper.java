@@ -10,4 +10,7 @@ public interface SysWarnMapper extends ColdMapper<SysWarn> {
 
     @Select("SELECT * FROM sys_warn WHERE state=1 AND email_state=1")
     List<SysWarn> getEmail();
+
+    @Select("SELECT * FROM sys_warn WHERE state=1 AND phone_state=1")
+    List<SysWarn> getPhone();
 }

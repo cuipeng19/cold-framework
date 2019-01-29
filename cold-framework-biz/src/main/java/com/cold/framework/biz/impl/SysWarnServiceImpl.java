@@ -8,6 +8,7 @@ import com.cold.framework.dao.util.ColdMapper;
 import com.cold.framework.notify.email.EmailSender;
 import com.cold.framework.notify.monitor.WarnMsg;
 import com.cold.framework.notify.monitor.WarnMsgHandler;
+import com.cold.framework.notify.sms.SmsFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class SysWarnServiceImpl extends AbstractDbBaseService<SysWarn,Long> impl
     private EmailSender emailSender;
     @Autowired
     private WarnMsgHandler warnMsgHandler;
+    @Autowired
+    private SmsFactory smsFactory;
 
     @Override
     public void sendEmail(WarnMsg warnMsg) {
@@ -48,7 +51,7 @@ public class SysWarnServiceImpl extends AbstractDbBaseService<SysWarn,Long> impl
         }).collect(Collectors.toList());
 
         // send email
-        sysWarns.stream().parallel().forEach(e -> emailSender.sendSimpleEmail(e.getEmail(),warnMsgHandler.buildTitle(warnMsg),warnMsgHandler.buildContent(warnMsg)));
+        sysWarns.parallelStream().forEach(e -> emailSender.sendSimpleEmail(e.getEmail(),warnMsgHandler.buildEmailTitle(warnMsg),warnMsgHandler.buildEmailContent(warnMsg)));
 
         // log
         if(sysWarns.size()>0) {
@@ -56,6 +59,30 @@ public class SysWarnServiceImpl extends AbstractDbBaseService<SysWarn,Long> impl
                     + sysWarns.stream().map(e -> e.getUserName()).collect(Collectors.joining(",")));
         } else {
             logger.info("The email of monitor：" + warnMsg.getExceptionSystem() + "(" + warnMsg.getExceptionName() + "),not matched to related person.");
+        }
+    }
+
+    @Override
+    public void sendSms(WarnMsg warnMsg) {
+        List<SysWarn> sysWarns = sysWarnMapper.getPhone().stream().filter(e -> {
+            boolean result = false;
+            for(String eventType : e.getEventType().split(",")) {
+                if(eventType.equals(warnMsg.getEventType())) {
+                    result = true;
+                }
+            }
+            return result;
+        }).collect(Collectors.toList());
+
+        // send sms
+        sysWarns.parallelStream().forEach(e -> smsFactory.getSmsSender().sendCustomSms(e.getPhone(),warnMsgHandler.buildSmsContent(warnMsg)));
+
+        // log
+        if(sysWarns.size()>0) {
+            logger.info("Send sms with warn message successful：" + warnMsg.getExceptionSystem() + "(" + warnMsg.getExceptionName() + "),send to："
+                    + sysWarns.stream().map(e -> e.getUserName()).collect(Collectors.joining(",")));
+        } else {
+            logger.info("The sms of monitor：" + warnMsg.getExceptionSystem() + "(" + warnMsg.getExceptionName() + "),not matched to related person.");
         }
     }
 }

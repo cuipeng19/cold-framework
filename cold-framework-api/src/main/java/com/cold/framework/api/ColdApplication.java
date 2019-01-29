@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +15,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @since 2018/12/4 11:21
  */
 @SpringBootApplication
+@ServletComponentScan
 @ComponentScan(basePackages = "com.cold.framework")
 @MapperScan(basePackages = "com.cold.framework.dao.mapper")
 public class ColdApplication {

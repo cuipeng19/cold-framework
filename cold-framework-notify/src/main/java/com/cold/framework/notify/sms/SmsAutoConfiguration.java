@@ -14,9 +14,9 @@ import java.util.Map;
  * @author cuipeng
  * @date 2019/1/28 18:03
  */
-@Configuration("smsAutoConfiguration")
+@Configuration
 @EnableConfigurationProperties(SmsProperties.class)
-public class AutoConfiguration {
+public class SmsAutoConfiguration {
 
     @Autowired
     private SmsProperties smsProperties;

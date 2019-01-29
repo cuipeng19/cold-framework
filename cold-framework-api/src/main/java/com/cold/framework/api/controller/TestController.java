@@ -2,6 +2,7 @@ package com.cold.framework.api.controller;
 
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.CollectionService;
+import com.cold.framework.biz.SysWarnService;
 import com.cold.framework.common.annotation.Token;
 import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.notify.email.EmailSender;
@@ -33,6 +34,8 @@ public class TestController {
     private CollectionService collectionService;
     @Autowired
     private MonitorSender monitorSender;
+    @Autowired
+    private SysWarnService sysWarnService;
 
     /**
      * Send a simple e-mail to specific mailbox.
@@ -126,5 +129,15 @@ public class TestController {
     public Object tokenTest() {
 
         return new BaseOutVo();
+    }
+
+    /**
+     * The configuration of druid.
+     *
+     * @return
+     */
+    @GetMapping("/druid")
+    public Object druidTest() {
+        return new BaseOutVo(sysWarnService.get(1L));
     }
 }

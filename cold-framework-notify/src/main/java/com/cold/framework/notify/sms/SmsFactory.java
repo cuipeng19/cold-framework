@@ -49,6 +49,11 @@ public class SmsFactory {
         this.smsSource = smsSource;
     }
 
+    /**
+     * Getting method of sending SMS.
+     *
+     * @return
+     */
     public SmsSender getSmsSender() {
         SmsSender smsSender = null;
 

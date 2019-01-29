@@ -1,5 +1,6 @@
-package com.cold.framework.notify.sms;
+package com.cold.framework.notify.sms.config;
 
+import com.cold.framework.notify.sms.FeigeSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**

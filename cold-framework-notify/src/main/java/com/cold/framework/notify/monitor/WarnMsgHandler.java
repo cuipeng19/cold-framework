@@ -28,7 +28,7 @@ public class WarnMsgHandler {
         warnMsg.setEventType(eventType);
         warnMsg.setExceptionName(e.toString());
         String[] names = path.split("/");
-        warnMsg.setExceptionSystem(names[names.length-3]);
+        warnMsg.setExceptionSystem(names[names.length-4]);
         warnMsg.setWarnTime(new Date());
         warnMsg.setExceptionStack(ExceptionUtil.getStackTrace(e));
         return warnMsg;

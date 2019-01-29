@@ -1,5 +1,7 @@
-package com.cold.framework.notify.sms;
+package com.cold.framework.notify.sms.config;
 
+import com.cold.framework.notify.sms.SmsFactory;
+import com.cold.framework.notify.sms.SmsSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

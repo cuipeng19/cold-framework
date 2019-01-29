@@ -7,7 +7,10 @@ package com.cold.framework.notify.sms;
 public interface SmsSender {
 
     /**
-     * The method of send sms.
+     * The method of send custom SMS.
+     *
+     * @param phoneNumber phone number
+     * @param content SMS content
      */
     void sendCustomSms(String phoneNumber, String content);
 }

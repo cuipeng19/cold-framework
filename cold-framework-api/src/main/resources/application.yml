@@ -60,7 +60,7 @@ rabbitmq:
         collection-out:
             name: collection-out
         message:
-            name: warn-message
+            name: warn-sms
         email:
             name: warn-email
     bindings:
@@ -68,9 +68,16 @@ rabbitmq:
             - collection-in
             - collection-out
         warn-fanout:
-            - warn-message
+            - warn-sms
             - warn-email
 
+sms:
+    type: feige
+    feige:
+        account:
+        pwd:
+        signId:
+        sendUrl: http://api.feige.ee/SmsService/Send
 
 ---
 spring:

@@ -31,7 +31,7 @@ import java.util.Map;
  * @author cuipeng
  * @date 2019/1/2 9:58
  */
-@Configuration
+@Configuration("mqAutoConfiguration")
 @EnableConfigurationProperties(RabbitmqProperties.class)
 public class AutoConfiguration {
 

@@ -21,7 +21,7 @@ public class WarnMsgHandler {
      * @param eventType event type
      * @param e exception
      * @param path project path
-     * @return
+     * @return warn data
      */
     public WarnMsg buildWarnMsg(String eventType, Exception e, String path) {
         WarnMsg warnMsg = new WarnMsg();
@@ -38,9 +38,9 @@ public class WarnMsgHandler {
      * build email title.
      *
      * @param warnMsg warn data
-     * @return
+     * @return email title
      */
-    public String buildTitle(WarnMsg warnMsg) {
+    public String buildEmailTitle(WarnMsg warnMsg) {
         StringBuffer buffer = new StringBuffer();
         buffer.append("monitor：");
         buffer.append(warnMsg.getExceptionSystem());
@@ -54,13 +54,29 @@ public class WarnMsgHandler {
      * build email content
      *
      * @param warnMsg warn data
-     * @return
+     * @return email content
      */
-    public String buildContent(WarnMsg warnMsg) {
+    public String buildEmailContent(WarnMsg warnMsg) {
         StringBuffer buffer = new StringBuffer();
         buffer.append("Project name：" + warnMsg.getExceptionSystem() + "\r\n");
         buffer.append("Occur time：" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(warnMsg.getWarnTime()) + "\r\n");
         buffer.append("stack information：" + warnMsg.getExceptionStack());
+        return buffer.toString();
+    }
+
+    /**
+     * build sms content
+     *
+     * @param warnMsg warn data
+     * @return sms content
+     */
+    public String buildSmsContent(WarnMsg warnMsg) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("monitor：");
+        buffer.append(warnMsg.getExceptionSystem());
+        buffer.append("(");
+        buffer.append(warnMsg.getExceptionName());
+        buffer.append(")");
         return buffer.toString();
     }
 }

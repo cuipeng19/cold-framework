@@ -1,5 +1,8 @@
 package com.cold.framework.api.listener;
 
+import com.alibaba.fastjson.JSON;
+import com.cold.framework.biz.SysWarnService;
+import com.cold.framework.notify.monitor.WarnMsg;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
@@ -16,10 +19,12 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019/1/10 18:53
  */
 @Configuration
-public class WarnMessageListener {
+public class WarnSmsListener {
 
     @Autowired
     private ConnectionFactory factory;
+    @Autowired
+    private SysWarnService sysWarnService;
 
     /**
      * A simple listener container is used for receive message from rabbitMQ to send SMS
@@ -27,13 +32,13 @@ public class WarnMessageListener {
      *
      * @return
      */
-    @Bean("warnMessageContainer")
+    @Bean("warnSmsContainer")
     public MessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(factory);
-        container.setQueueNames("warn-message");
+        container.setQueueNames("warn-sms");
         container.setMessageListener((ChannelAwareMessageListener) (message, channel) -> {
-            System.out.println(new String(message.getBody(),"utf-8"));
+            sysWarnService.sendSms(JSON.parseObject(new String(message.getBody(),"utf-8"), WarnMsg.class));
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         });
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL);

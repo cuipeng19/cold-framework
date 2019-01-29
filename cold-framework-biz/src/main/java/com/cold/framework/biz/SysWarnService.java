@@ -15,4 +15,11 @@ public interface SysWarnService extends BaseService<SysWarn,Long> {
      * @param warnMsg warn data
      */
     void sendEmail(WarnMsg warnMsg);
+
+    /**
+     * send sms
+     *
+     * @param warnMsg warn data
+     */
+    void sendSms(WarnMsg warnMsg);
 }

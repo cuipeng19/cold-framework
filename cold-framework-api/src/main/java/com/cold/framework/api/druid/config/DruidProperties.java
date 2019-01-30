@@ -14,31 +14,41 @@ public class DruidProperties {
     private String password;
     private String driverClass;
 
-    // 初始化大小，最小，最大
-    private int maxActive=20;
-    private int minIdle=5;
-    private int initialSize=1;
+    /**
+     * initialize.
+     */
+    private int maxActive = 20;
+    private int minIdle = 5;
+    private int initialSize = 1;
 
-    // 配置获取连接等待超时的时间
+    /**
+     * configure to get the connection with waiting timeout.
+     */
     private long maxWait = 60000;
 
-    // 配置一个连接在池中最小生存的时间，单位是毫秒
-    private long minEvictableIdleTimeMillis=25200000;
+    /**
+     * configure the minimum lifetime of a connection in the pool.
+     */
+    private long minEvictableIdleTimeMillis = 600000;
 
-    private String validationQuery="SELECT 1 FROM DUAL";
-    private boolean testOnBorrow=false;
-    private boolean testOnReturn=false;
-    private boolean testWhileIdle=true;
+    private String validationQuery = "SELECT 1 FROM DUAL";
+    private boolean testOnBorrow = false;
+    private boolean testOnReturn = false;
+    private boolean testWhileIdle = true;
 
-    // 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-    private long timeBetweenEvictionRunsMillis=6000;
-    private boolean removeAbandoned=true;
-    private long removeAbandonedTimeout=1800;
-    private boolean logAbandoned=true;
+    /**
+     * configure time is checked once.
+     */
+    private long timeBetweenEvictionRunsMillis = 6000;
+    private boolean removeAbandoned = true;
+    private long removeAbandonedTimeout = 1800;
+    private boolean logAbandoned = true;
 
-    // 打开PSCache，并且指定每个连接上PSCache的大小
-    private boolean poolPreparedStatements=true;
-    private int maxPoolPreparedStatementPerConnectionSize=20;
+    /**
+     * open the psCache and specify the size of the psCache on each connection.
+     */
+    private boolean poolPreparedStatements = true;
+    private int maxPoolPreparedStatementPerConnectionSize = 20;
 
     private String filters;
 

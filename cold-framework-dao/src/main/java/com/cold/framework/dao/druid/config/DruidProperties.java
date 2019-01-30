@@ -1,4 +1,4 @@
-package com.cold.framework.api.druid.config;
+package com.cold.framework.dao.druid.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

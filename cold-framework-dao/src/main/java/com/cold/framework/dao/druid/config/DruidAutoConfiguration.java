@@ -1,4 +1,4 @@
-package com.cold.framework.api.druid.config;
+package com.cold.framework.dao.druid.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Autowired;

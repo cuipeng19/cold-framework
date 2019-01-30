@@ -15,7 +15,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @since 2018/12/4 11:21
  */
 @SpringBootApplication
-@ServletComponentScan
+@ServletComponentScan(basePackages = "com.cold.framework")
 @ComponentScan(basePackages = "com.cold.framework")
 @MapperScan(basePackages = "com.cold.framework.dao.mapper")
 public class ColdApplication {

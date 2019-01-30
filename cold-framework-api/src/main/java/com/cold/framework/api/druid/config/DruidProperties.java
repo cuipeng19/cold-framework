@@ -25,20 +25,20 @@ public class DruidProperties {
     // 配置一个连接在池中最小生存的时间，单位是毫秒
     private long minEvictableIdleTimeMillis=25200000;
 
-    private String validationQuery="SELECT 1 FROM DUAL";
-    private boolean testOnBorrow=false;
-    private boolean testOnReturn=false;
-    private boolean testWhileIdle=true;
+    private String validationQuery = "SELECT 1 FROM DUAL";
+    private boolean testOnBorrow = false;
+    private boolean testOnReturn = false;
+    private boolean testWhileIdle = true;
 
     // 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-    private long timeBetweenEvictionRunsMillis=6000;
-    private boolean removeAbandoned=true;
-    private long removeAbandonedTimeout=1800;
-    private boolean logAbandoned=true;
+    private long timeBetweenEvictionRunsMillis = 6000;
+    private boolean removeAbandoned = true;
+    private long removeAbandonedTimeout = 1800;
+    private boolean logAbandoned = true;
 
     // 打开PSCache，并且指定每个连接上PSCache的大小
-    private boolean poolPreparedStatements=true;
-    private int maxPoolPreparedStatementPerConnectionSize=20;
+    private boolean poolPreparedStatements = true;
+    private int maxPoolPreparedStatementPerConnectionSize = 20;
 
     private String filters;
 

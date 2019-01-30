@@ -25,6 +25,7 @@ public class DruidAutoConfiguration {
     @Primary
     public DataSource dataSource() {
         DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName(druidProperties.getDriverClass());
         dataSource.setUrl(druidProperties.getUrl());
         dataSource.setUsername(druidProperties.getUsername());
         dataSource.setPassword(druidProperties.getPassword());

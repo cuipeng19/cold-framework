@@ -102,6 +102,7 @@ spring:
         publisherReturns: true
 
 druid:
+    driver-class: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/
     username:
     password:

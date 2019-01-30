@@ -15,15 +15,15 @@ public class DruidProperties {
     private String driverClass;
 
     // 初始化大小，最小，最大
-    private int maxActive=20;
-    private int minIdle=5;
-    private int initialSize=1;
+    private int maxActive = 20;
+    private int minIdle = 5;
+    private int initialSize = 1;
 
     // 配置获取连接等待超时的时间
     private long maxWait = 60000;
 
     // 配置一个连接在池中最小生存的时间，单位是毫秒
-    private long minEvictableIdleTimeMillis=25200000;
+    private long minEvictableIdleTimeMillis = 600000;
 
     private String validationQuery = "SELECT 1 FROM DUAL";
     private boolean testOnBorrow = false;

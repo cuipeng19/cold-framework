@@ -57,7 +57,13 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
             userDeviceMapper.insertSelective(userDevice);
 
             // save redis
-            stringRedisTemplate.opsForSet().add(ColdDictionary.USER_TOKEN, token);
+            stringRedisTemplate.opsForHash().put(ColdDictionary.USER_TOKEN, token, deviceId);
+        } else if(!deviceId.equals(userDevice.getDeviceId())) {
+            // invalid original device
+            userDeviceMapper.updateByPrimaryKeySelective(userDeviceHandler.buildInvalidDevice(userDevice.getId()));
+
+            // create new device
+            userDeviceMapper.insertSelective(userDeviceHandler.buildUserDevice(userDevice.getUserId(),userDevice.getToken(),deviceId,phoneNumber));
         }
 
         return userDevice.getToken();

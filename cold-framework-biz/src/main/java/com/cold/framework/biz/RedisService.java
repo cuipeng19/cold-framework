@@ -36,5 +36,5 @@ public interface RedisService {
      * @param token
      * @return
      */
-    Boolean checkTokenInLogin(String token);
+    String checkTokenInLogin(String token);
 }

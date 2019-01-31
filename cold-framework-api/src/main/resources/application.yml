@@ -31,7 +31,8 @@ spring:
                 smtp:
                     auth: true
                     timeout: 25000
-
+                    connectiontimeout: 25000
+                    writetimeout: 25000
 mybatis:
     typeAliasesPackage: com.cold.framework.dao.model
     mapperLocations: classpath:mapper/*Mapper.xml

@@ -7,6 +7,7 @@ import com.cold.framework.common.dictionary.ColdState;
 import com.cold.framework.common.exception.ColdException;
 import com.cold.framework.common.exception.ParamException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -174,8 +175,8 @@ public class ControllerMonitor {
             if(token==null) {
                 throw new ColdException(ColdState.TOKEN_NOT_EXIST);
             }
-            Boolean tokenExist = stringRedisTemplate.opsForSet().isMember(ColdDictionary.USER_TOKEN, token);
-            if(tokenExist!=null && !tokenExist) {
+            Object deviceId = stringRedisTemplate.opsForHash().get(ColdDictionary.USER_TOKEN, token);
+            if(StringUtils.isBlank((String) deviceId)) {
                 throw new ColdException(ColdState.TOKEN_INVALID);
             }
         }

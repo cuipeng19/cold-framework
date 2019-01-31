@@ -8,6 +8,7 @@ import com.cold.framework.biz.UserService;
 import com.cold.framework.common.annotation.Token;
 import com.cold.framework.dao.model.UserDevice;
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -78,8 +79,8 @@ public class ColdController {
         redisService.checkCodeInLogin(inVo.getPhoneNumber(), inVo.getSmsCode());
 
         // try to obtain in redis
-        Boolean tokenExist = redisService.checkTokenInLogin(inVo.getToken());
-        if(tokenExist!=null && !tokenExist) {
+        String deviceId = redisService.checkTokenInLogin(inVo.getToken());
+        if(StringUtils.isBlank(deviceId) || !deviceId.equals(inVo.getDeviceId())) {
             token = userService.createUser(inVo.getPhoneNumber(), inVo.getDeviceId());
         }
 

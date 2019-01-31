@@ -27,4 +27,17 @@ public class UserDeviceHandler {
         userDevice.setStatus(1);
         return userDevice;
     }
+
+    /**
+     * Construct a {@code UserDevice} of invalid state by id.
+     *
+     * @param id id
+     * @return
+     */
+    public UserDevice buildInvalidDevice(Long id) {
+        UserDevice userDevice = new UserDevice();
+        userDevice.setId(id);
+        userDevice.setStatus(0);
+        return userDevice;
+    }
 }

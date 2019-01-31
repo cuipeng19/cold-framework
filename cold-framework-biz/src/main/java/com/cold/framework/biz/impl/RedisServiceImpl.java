@@ -60,8 +60,9 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public Boolean checkTokenInLogin(String token) {
-        return stringRedisTemplate.opsForSet().isMember(ColdDictionary.USER_TOKEN, token);
+    public String checkTokenInLogin(String token) {
+        Object deviceId = stringRedisTemplate.opsForHash().get(ColdDictionary.USER_TOKEN, token);
+        return (String) deviceId;
     }
 
 }

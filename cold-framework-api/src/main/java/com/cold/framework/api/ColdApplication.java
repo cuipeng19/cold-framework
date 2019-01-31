@@ -4,18 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 import tk.mybatis.spring.annotation.MapperScan;
+
+import java.time.Duration;
 
 /**
  * @author cuipeng
  * @since 2018/12/4 11:21
  */
 @SpringBootApplication
-@ServletComponentScan
 @ComponentScan(basePackages = "com.cold.framework")
 @MapperScan(basePackages = "com.cold.framework.dao.mapper")
 public class ColdApplication {
@@ -29,8 +29,9 @@ public class ColdApplication {
 
     @Bean
     public RestTemplate build() {
-        restTemplateBuilder.setConnectTimeout(10000);
-        restTemplateBuilder.setReadTimeout(10000);
-        return restTemplateBuilder.build();
+        Duration duration = Duration.ofSeconds(10);
+        this.restTemplateBuilder.setConnectTimeout(duration);
+        this.restTemplateBuilder.setReadTimeout(duration);
+        return this.restTemplateBuilder.build();
     }
 }

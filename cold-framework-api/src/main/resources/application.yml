@@ -100,17 +100,43 @@ spring:
         virtualHost: /
         publisherConfirms: true
         publisherReturns: true
-
-druid:
-    driver-class: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/
-    username:
-    password:
-    initial-size: 5
-    min-idle: 5
-    max-active: 20
-    test-on-borrow: true
-    filters: stat,wall,slf4j
+    datasource:
+        druid:
+            # JDBC
+            url: jdbc:mysql://127.0.0.1:3306/
+            username:
+            password:
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            # connection pool
+            initial-size: 0
+            max-active: 60
+            min-idle: 2
+            max-wait: 5000
+            pool-prepared-statements: true
+            max-pool-prepared-statement-per-connection-size: 20
+            validation-query: 'SELECT 1 FROM DUAL'
+            validation-query-timeout: 1000
+            test-on-borrow: false
+            test-on-return: false
+            test-while-idle: true
+            time-between-eviction-runs-millis: 6000
+            min-evictable-idle-time-millis: 600000
+            max-evictable-idle-time-millis: 25200000
+            keep-alive: true
+            fail-fast: true
+            filters: mergeStat,wall,slf4j
+            web-stat-filter:
+                enabled: true
+                url-pattern: /*
+                exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+            stat-view-servlet:
+                enabled: true
+                url-pattern: /druid/*
+                reset-enable: false
+                login-username: dev
+                login-password: dev
+                allow: 127.0.0.1
+                deny: 192.0.0.1
 
 
 ---

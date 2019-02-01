@@ -9,12 +9,29 @@ import com.cold.framework.dao.model.User;
 public interface UserService extends BaseService<User, String> {
 
     /**
+     * Getting SMS verification code.
+     *
+     * @return sms code
+     */
+    String getSmsCode(String phoneNumber);
+
+    /**
      * Getting {@code User} by phone number.
      *
      * @param phoneNumber phone number
      * @return {@code User}
      */
     User getByPhone(String phoneNumber);
+
+    /**
+     * User login.
+     *
+     * @param phoneNumber phone number
+     * @param smsCode SMS code
+     * @param token token
+     * @return device id
+     */
+    String login(String phoneNumber, String smsCode, String token);
 
     /**
      * Create a new user by phone number.

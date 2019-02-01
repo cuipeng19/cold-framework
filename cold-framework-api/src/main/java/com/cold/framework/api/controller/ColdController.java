@@ -2,7 +2,6 @@ package com.cold.framework.api.controller;
 
 import com.cold.framework.api.bean.in.LoginInVo;
 import com.cold.framework.api.bean.out.BaseOutVo;
-import com.cold.framework.biz.RedisService;
 import com.cold.framework.biz.UserDeviceService;
 import com.cold.framework.biz.UserService;
 import com.cold.framework.biz.handler.UserHandler;
@@ -30,8 +29,6 @@ import javax.validation.constraints.NotBlank;
 public class ColdController {
 
     @Autowired
-    private RedisService redisService;
-    @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private UserService userService;
@@ -50,7 +47,7 @@ public class ColdController {
     @GetMapping("/sms/code/get")
     public Object getSmsCode(@Length(min = 11, max = 11) @NotBlank String phoneNumber) {
         // obtain SMS verification code
-        String smsCode = redisService.getSmsCode(phoneNumber);
+        String smsCode = userService.getSmsCode(phoneNumber);
 
         // send SMS
         smsFactory.getSmsSender().sendCustomSms(phoneNumber,userHandler.buildSmsContent(smsCode));
@@ -59,7 +56,7 @@ public class ColdController {
     }
 
     /**
-     * Asynchronous validate token when obtain SMS code.
+     * Asynchronous validate token when obtain SMS code or enter application every time.
      *
      * @param phoneNumber phone number
      * @return token
@@ -77,7 +74,7 @@ public class ColdController {
     }
 
     /**
-     * Login.
+     * User login.
      *
      * @return token
      */
@@ -85,11 +82,8 @@ public class ColdController {
     public Object login(@RequestBody LoginInVo inVo) {
         String token = inVo.getToken();
 
-        // check SMS code
-        redisService.checkCodeInLogin(inVo.getPhoneNumber(), inVo.getSmsCode());
-
-        // try to obtain in redis
-        String deviceId = redisService.checkTokenInLogin(inVo.getToken());
+        // user login
+        String deviceId = userService.login(inVo.getPhoneNumber(), inVo.getSmsCode(), inVo.getToken());
         if(StringUtils.isBlank(deviceId) || !deviceId.equals(inVo.getDeviceId())) {
             token = userService.createUser(inVo.getPhoneNumber(), inVo.getDeviceId());
         }

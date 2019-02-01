@@ -5,8 +5,10 @@ import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.RedisService;
 import com.cold.framework.biz.UserDeviceService;
 import com.cold.framework.biz.UserService;
+import com.cold.framework.biz.handler.UserHandler;
 import com.cold.framework.common.annotation.Token;
 import com.cold.framework.dao.model.UserDevice;
+import com.cold.framework.notify.sms.SmsFactory;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
@@ -34,7 +36,11 @@ public class ColdController {
     @Autowired
     private UserService userService;
     @Autowired
+    private UserHandler userHandler;
+    @Autowired
     private UserDeviceService userDeviceService;
+    @Autowired
+    private SmsFactory smsFactory;
 
     /**
      * Getting SMS verification code.
@@ -43,8 +49,11 @@ public class ColdController {
      */
     @GetMapping("/sms/code/get")
     public Object getSmsCode(@Length(min = 11, max = 11) @NotBlank String phoneNumber) {
+        // obtain SMS verification code
         String smsCode = redisService.getSmsCode(phoneNumber);
-        // todo send SMS code
+
+        // send SMS
+        smsFactory.getSmsSender().sendCustomSms(phoneNumber,userHandler.buildSmsContent(smsCode));
 
         return new BaseOutVo(ImmutableMap.of("smsCode",smsCode));
     }
@@ -63,6 +72,7 @@ public class ColdController {
         if(userDevice!=null) {
             token = userDevice.getToken();
         }
+
         return new BaseOutVo(ImmutableMap.of("token", token));
     }
 

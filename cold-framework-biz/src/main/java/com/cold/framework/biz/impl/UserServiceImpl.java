@@ -77,7 +77,7 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     }
 
     @Override
-    public String login(String phoneNumber, String orgSmsCode, String token) {
+    public String signIn(String phoneNumber, String orgSmsCode, String token) {
         // check SMS code
         String errorCount = stringRedisTemplate.opsForValue().get(ColdDictionary.SMS_ERROR + phoneNumber);
         if(Integer.valueOf(errorCount==null ? "0" : errorCount) >= 5) {
@@ -122,5 +122,10 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
         }
 
         return userDevice.getToken();
+    }
+
+    @Override
+    public Long signOut(String token) {
+        return stringRedisTemplate.opsForHash().delete(ColdDictionary.USER_TOKEN, token);
     }
 }

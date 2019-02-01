@@ -5,12 +5,12 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 
 /**
- * Parameters required for login.
+ * Parameters required for sign in.
  *
  * @author cuipeng
  * @date 2019/1/18 14:57
  */
-public class LoginInVo extends BaseInVo {
+public class SignInVo extends BaseInVo {
 
     @NotBlank
     @Length(min = 11, max = 11)

@@ -25,4 +25,17 @@ public class UserHandler {
 
         return user;
     }
+
+    /**
+     * Construct a content of SMS.
+     *
+     * @param smsCode SMS code
+     * @return content
+     */
+    public String buildSmsContent(String smsCode) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("SMS code: ");
+        buffer.append(smsCode);
+        return buffer.toString();
+    }
 }

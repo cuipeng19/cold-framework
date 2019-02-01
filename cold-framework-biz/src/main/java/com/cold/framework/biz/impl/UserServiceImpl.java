@@ -14,6 +14,7 @@ import com.cold.framework.dao.mapper.UserMapper;
 import com.cold.framework.dao.model.User;
 import com.cold.framework.dao.model.UserDevice;
 import com.cold.framework.dao.util.ColdMapper;
+import com.cold.framework.notify.sms.SmsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     private UserDeviceMapper userDeviceMapper;
     @Autowired
     private UserDeviceHandler userDeviceHandler;
+    @Autowired
+    private SmsFactory smsFactory;
 
     /**
      * Set a timeout for key and increase it by delta.
@@ -119,6 +122,9 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
 
             // create new device
             userDeviceMapper.insertSelective(userDeviceHandler.buildUserDevice(userDevice.getUserId(),userDevice.getToken(),deviceId,phoneNumber));
+
+            // notice phone
+            smsFactory.getSmsSender().sendCustomSms(userDevice.getPhoneNumber(),userDeviceHandler.buildNoticePhone());
         }
 
         return userDevice.getToken();

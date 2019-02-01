@@ -40,4 +40,15 @@ public class UserDeviceHandler {
         userDevice.setStatus(0);
         return userDevice;
     }
+
+    /**
+     * Construct a content of SMS.
+     *
+     * @return content
+     */
+    public String buildNoticePhone() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("Account login on other device.");
+        return buffer.toString();
+    }
 }

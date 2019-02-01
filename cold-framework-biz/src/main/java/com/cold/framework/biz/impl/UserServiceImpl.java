@@ -14,6 +14,7 @@ import com.cold.framework.dao.mapper.UserMapper;
 import com.cold.framework.dao.model.User;
 import com.cold.framework.dao.model.UserDevice;
 import com.cold.framework.dao.util.ColdMapper;
+import com.cold.framework.notify.sms.SmsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     private UserDeviceMapper userDeviceMapper;
     @Autowired
     private UserDeviceHandler userDeviceHandler;
+    @Autowired
+    private SmsFactory smsFactory;
 
     /**
      * Set a timeout for key and increase it by delta.
@@ -77,7 +80,7 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
     }
 
     @Override
-    public String login(String phoneNumber, String orgSmsCode, String token) {
+    public String signIn(String phoneNumber, String orgSmsCode, String token) {
         // check SMS code
         String errorCount = stringRedisTemplate.opsForValue().get(ColdDictionary.SMS_ERROR + phoneNumber);
         if(Integer.valueOf(errorCount==null ? "0" : errorCount) >= 5) {
@@ -119,8 +122,16 @@ public class UserServiceImpl extends AbstractDbBaseService<User, String> impleme
 
             // create new device
             userDeviceMapper.insertSelective(userDeviceHandler.buildUserDevice(userDevice.getUserId(),userDevice.getToken(),deviceId,phoneNumber));
+
+            // notice phone
+            smsFactory.getSmsSender().sendCustomSms(userDevice.getPhoneNumber(),userDeviceHandler.buildNoticePhone());
         }
 
         return userDevice.getToken();
+    }
+
+    @Override
+    public Long signOut(String token) {
+        return stringRedisTemplate.opsForHash().delete(ColdDictionary.USER_TOKEN, token);
     }
 }

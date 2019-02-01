@@ -24,14 +24,14 @@ public interface UserService extends BaseService<User, String> {
     User getByPhone(String phoneNumber);
 
     /**
-     * User login.
+     * User sign in.
      *
      * @param phoneNumber phone number
      * @param smsCode SMS code
      * @param token token
      * @return device id
      */
-    String login(String phoneNumber, String smsCode, String token);
+    String signIn(String phoneNumber, String smsCode, String token);
 
     /**
      * Create a new user by phone number.
@@ -42,4 +42,11 @@ public interface UserService extends BaseService<User, String> {
      */
     String createUser(String phoneNumber, String deviceId);
 
+    /**
+     * User sign out.
+     *
+     * @param token token
+     * @return delete result
+     */
+    Long signOut(String token);
 }

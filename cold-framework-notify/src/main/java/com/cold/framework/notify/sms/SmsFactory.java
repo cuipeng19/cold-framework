@@ -25,24 +25,12 @@ public class SmsFactory {
         this.smsSource = smsSource;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public void setType(String type) {
         this.type = type;
     }
 
-    public List<String> getTypeSource() {
-        return typeSource;
-    }
-
     public void setTypeSource(List<String> typeSource) {
         this.typeSource = typeSource;
-    }
-
-    public Map<String, SmsSender> getSmsSource() {
-        return smsSource;
     }
 
     public void setSmsSource(Map<String, SmsSender> smsSource) {

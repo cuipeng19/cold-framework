@@ -1,11 +1,13 @@
 package com.cold.framework.api.controller;
 
-import com.cold.framework.api.bean.in.LoginInVo;
+import com.cold.framework.api.bean.in.SignInVo;
 import com.cold.framework.api.bean.out.BaseOutVo;
 import com.cold.framework.biz.UserDeviceService;
 import com.cold.framework.biz.UserService;
 import com.cold.framework.biz.handler.UserHandler;
 import com.cold.framework.common.annotation.Token;
+import com.cold.framework.common.dictionary.ColdState;
+import com.cold.framework.common.exception.ColdException;
 import com.cold.framework.dao.model.UserDevice;
 import com.cold.framework.notify.sms.SmsFactory;
 import com.google.common.collect.ImmutableMap;
@@ -74,20 +76,38 @@ public class ColdController {
     }
 
     /**
-     * User login.
+     * User sign in.
      *
+     * @param inVo Parameters required for sign in.
      * @return token
      */
-    @PostMapping("/login")
-    public Object login(@RequestBody LoginInVo inVo) {
+    @PostMapping("/sign/in")
+    public Object signIn(@RequestBody SignInVo inVo) {
         String token = inVo.getToken();
 
-        // user login
-        String deviceId = userService.login(inVo.getPhoneNumber(), inVo.getSmsCode(), inVo.getToken());
+        // sign in
+        String deviceId = userService.signIn(inVo.getPhoneNumber(), inVo.getSmsCode(), inVo.getToken());
         if(StringUtils.isBlank(deviceId) || !deviceId.equals(inVo.getDeviceId())) {
             token = userService.createUser(inVo.getPhoneNumber(), inVo.getDeviceId());
         }
 
         return new BaseOutVo(ImmutableMap.of("token",token));
+    }
+
+    /**
+     * User sign out.
+     *
+     * @param token token
+     * @return
+     */
+    @GetMapping("/sign/out")
+    public Object signOut(@Length(min = 1, max = 50) @NotBlank String token) {
+        // sign out
+        Long result = userService.signOut(token);
+        if(result==null || result<1) {
+            throw new ColdException(ColdState.SIGN_OUT_FAIL);
+        }
+
+        return new BaseOutVo();
     }
 }

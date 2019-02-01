@@ -47,10 +47,12 @@ public enum ColdState {
      * {@code 11012 SMS code is invalid}
      */
     SMS_CODE_INVALID(11012, "SMS code is invalid"),
+
+
     /**
-     * {@code 11013 SMS code error}
+     * {@code 12001 Sign out fail}
      */
-    SMS_CODE_ERROR(11013, "SMS code error"),
+    SIGN_OUT_FAIL(12001, "Sign out fail"),
 
 
     /**

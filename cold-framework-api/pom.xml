@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.cold.framework</groupId>
-            <artifactId>cold.framework.biz</artifactId>
+            <artifactId>cold-framework-biz</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

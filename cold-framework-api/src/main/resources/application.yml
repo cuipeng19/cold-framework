@@ -41,9 +41,7 @@ mybatis:
 
 mapper:
     not-empty: false
-    identity: MYSQL
-    mappers:
-        - com.cold.framework.dao.util.ColdMapper
+    mappers: tk.mybatis.mapper.common.Mapper
 
 rabbitmq:
     exchanges:
